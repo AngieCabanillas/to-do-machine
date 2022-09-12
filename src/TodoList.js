@@ -1,4 +1,5 @@
 import React from 'react';
+import './TodoList.css';
 
 //coloco props para poder usar su propiedad que es TodoItem
 function TodoList(props) {

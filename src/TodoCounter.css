@@ -1,0 +1,17 @@
+.TodoCounter-title {
+  font-size: 40px;
+  background: white;
+  background: linear-gradient(50deg, rgba(200,30,230,1) 0%, rgba(255,198,255,1) 25%, rgba(185,6,176,1) 43%, rgba(21,18,238,1) 63%, rgba(124,144,244,1) 85%, rgba(78,95,189,1) 100%);
+  -webkit-text-fill-color: transparent; /*color de relleno de letras*/
+  -webkit-background-clip: text; /*fondo se extiende por las letras*/
+  text-align: center;
+  margin: 4px auto;
+}
+
+.TodoCounter-subtitle {
+  font-size: 18px;
+  color: rgb(31, 31, 31);
+  text-align: center;
+  margin: 10px auto;
+
+}

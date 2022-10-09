@@ -1,4 +1,5 @@
 .TodoCounter-title {
+  width: 260px;
   font-size: 40px;
   background: white;
   background: linear-gradient(50deg, rgba(200,30,230,1) 0%, rgba(255,198,255,1) 25%, rgba(185,6,176,1) 43%, rgba(21,18,238,1) 63%, rgba(124,144,244,1) 85%, rgba(78,95,189,1) 100%);
@@ -9,6 +10,7 @@
 }
 
 .TodoCounter-subtitle {
+  width: 270px;
   font-size: 18px;
   color: rgb(31, 31, 31);
   text-align: center;

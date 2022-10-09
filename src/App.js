@@ -26,7 +26,7 @@ function App() { //ES UN COMPONENTE
       <TodoCounter/>
       <TodoSearch/>
       <TodoList> 
-        {todos.map(todo => (
+        {todos.map((todo) => (
            //key es un identificador para los children
            <TodoItem key={todo.text} text={todo.text}/>
         ))}

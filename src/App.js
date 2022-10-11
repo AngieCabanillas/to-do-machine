@@ -10,7 +10,7 @@ import { TodoItem } from "./TodoItem";
 const defaultTodos = [
   {
     text: "Cleaning house",
-    completed: true,
+    completed: false,
   },
   {
     text: "Doing my homework",
@@ -48,6 +48,20 @@ function App() {
     });
   }
 
+  //TODOS COMPLETOS
+  const completeTodo = (text) => {
+    const indexTodo = todos.findIndex(todo => todo.text ===text);
+    const newTodos = todos.slice();
+    newTodos[indexTodo].completed = !newTodos[indexTodo].completed;
+    setTodos(newTodos);
+  }
+  const deleteTodo = (text) => {
+    const indexTodo = todos.findIndex(todo => todo.text ===text);
+    const newTodos = todos.slice();
+    newTodos.splice(indexTodo,1);
+    setTodos(newTodos);
+  }
+
   return (
     //React.Fragment -> react pide que sea 1 sola etiqueta
     <React.Fragment>
@@ -56,7 +70,12 @@ function App() {
       <TodoList>
         {searchTodos.map((todo) => (
           //key es un identificador para los children
-          <TodoItem key={todo.text} text={todo.text} />
+          <TodoItem 
+            key={todo.text} 
+            text={todo.text} 
+            onComplete={()=>completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)} 
+          />
         ))}
       </TodoList>
       <CreateTodoButton />

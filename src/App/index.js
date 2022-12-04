@@ -18,21 +18,32 @@ import { AppUI } from "./AppUI";
 //   },
 // ];
 
-function App() {
-  const localStorageTodos = localStorage.getItem('TODOS_V1');//todos(string)
-  let parsedTodos;//todos(objeto-array)
-  
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName); //todos(string)
+  let parsedItem; //todos(objeto-array)
+
   //verificar si esta vacío
-  if(localStorageTodos==''){
-    localStorage.setItem('TODOS_V1',JSON.stringify([]));
-    parsedTodos = [];
-  } else{
-    parsedTodos = JSON.parse(localStorageTodos);
+  if (localStorageItem == "") {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem = initialValue;
+  } else {
+    parsedItem = JSON.parse(localStorageItem);
   }
-  
+
   //ES UN COMPONENTE
   //LISTA DE TODOS
-  const [todos, setTodos] = React.useState(parsedTodos);
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItem = (newItem) => {
+    const stringifiedTodos = JSON.stringify(newItem);
+    localStorage.setItem(itemName, stringifiedTodos);
+    setItem(newItem);
+  };
+  return [item, saveItem];
+}
+
+function App() {
+  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
   //PASAMOS AQUI LOS ESTADOS PARA LOS COMPONENTES
   const [search, setSearch] = React.useState("");
   //CONTAR TODOS COMPLETOS
@@ -53,12 +64,6 @@ function App() {
       const todoText = todo.text.toLowerCase();
       return todoText.includes(searchText);
     });
-  }
-
-  const saveTodos = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', stringifiedTodos);
-    setTodos(newTodos);
   }
 
   //TODOS COMPLETOS

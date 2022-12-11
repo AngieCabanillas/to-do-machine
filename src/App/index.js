@@ -19,31 +19,60 @@ import { AppUI } from "./AppUI";
 // ];
 
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName); //todos(string)
-  let parsedItem; //todos(objeto-array)
+  const carga = true;
+  const [loading, setLoading] = React.useState(carga);
+  const [error, setError] = React.useState(false);
+  const [item, setItem] = React.useState(initialValue);
+  
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        const localStorageItem = localStorage.getItem(itemName); //todos(string)
+        let parsedItem; //todos(objeto-array)
 
-  //verificar si esta vacío
-  if (localStorageItem == "") {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
+        //verificar si esta vacío
+        if (localStorageItem == "") {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = initialValue;
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
+
+        setItem(parsedItem);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+      }
+    },1000);
+  });
 
   //ES UN COMPONENTE
   //LISTA DE TODOS
-  const [item, setItem] = React.useState(parsedItem);
-
   const saveItem = (newItem) => {
-    const stringifiedTodos = JSON.stringify(newItem);
-    localStorage.setItem(itemName, stringifiedTodos);
-    setItem(newItem);
+    try {
+      const stringifiedTodos = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedTodos);
+      setItem(newItem);
+    } catch (error) {
+      setError(error);
+    }
   };
-  return [item, saveItem];
+
+  return {
+    item,
+    saveItem,
+    loading,
+    error
+  };
 }
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item:todos,
+    saveItem : saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   //PASAMOS AQUI LOS ESTADOS PARA LOS COMPONENTES
   const [search, setSearch] = React.useState("");
   //CONTAR TODOS COMPLETOS
@@ -62,7 +91,7 @@ function App() {
       //convertir en minuscula a search y todos.text
       const searchText = search.toLowerCase();
       const todoText = todo.text.toLowerCase();
-      return todoText.includes(searchText);
+      return todoText.includes(searchText); 
     });
   }
 
@@ -79,9 +108,14 @@ function App() {
     newTodos.splice(indexTodo, 1);
     saveTodos(newTodos);
   };
+  
+  
+
 
   return (
     <AppUI
+      loading={loading}
+      error = {error}
       completedTodos={completedTodos}
       totalTodos={totalTodos}
       search={search}
